@@ -36,7 +36,7 @@ Explain Why 或研究展示时，才可以将已经冻结且通过安全检查�
 ## 安装
 
 ```bash
-git clone https://github.com/<owner>/More-Than-Peer-Review-Skill.git
+git clone https://github.com/DELONG-L/More-Than-Peer-Review-Skill.git
 cd More-Than-Peer-Review-Skill
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 ln -s "$(pwd)/more-than-peer-review" \

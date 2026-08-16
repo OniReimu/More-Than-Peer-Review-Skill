@@ -41,7 +41,7 @@ skill.
 Clone the repository and link the skill directory into Codex:
 
 ```bash
-git clone https://github.com/<owner>/More-Than-Peer-Review-Skill.git
+git clone https://github.com/DELONG-L/More-Than-Peer-Review-Skill.git
 cd More-Than-Peer-Review-Skill
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 ln -s "$(pwd)/more-than-peer-review" \
