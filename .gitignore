@@ -1,0 +1,22 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.env.*
+
+# Confidential manuscripts and all review-derived artifacts.
+reviews/
+waiting_review/
+tmp/
+*.pdf
+*.docx
+review_intake.json
+review_intake_report.json
+private-review.md
+submission-review.md
+*-security-report.json

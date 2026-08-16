@@ -1,0 +1,33 @@
+schema_version: 1
+
+intake:
+  explicit_confirmation_required: true
+  file_placement_is_confirmation: false
+  named_batch_confirmation_allowed: true
+
+processing:
+  local_only: true
+  external_service_use: false
+  data_reuse: false
+
+rubric:
+  default_submission_type: journal
+  journal_decisions:
+    - accept
+    - minor_revision
+    - major_revision
+    - reject
+  conference_resolution:
+    - user_confirmed
+    - official_public_source
+    - platform_default_fallback
+
+optional_stages:
+  research_presentation:
+    integrated: false
+    enabled_by_default: false
+    explicit_user_request_required: true
+
+form_filling:
+  explicit_request_required: true
+  final_submission_allowed_by_default: false
