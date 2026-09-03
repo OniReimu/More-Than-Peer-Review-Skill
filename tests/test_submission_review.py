@@ -48,6 +48,33 @@ class SubmissionReviewTests(unittest.TestCase):
         report = VALIDATOR.validate(VALID_REVIEW)
         self.assertTrue(report["valid"])
         self.assertEqual(report["counts"]["author_points"], 3)
+        self.assertIn(
+            "AUTHOR_POINT_COUNT_DEFAULT_FOUR",
+            {item["code"] for item in report["warnings"]},
+        )
+
+    def test_non_accept_review_with_fewer_than_three_points_blocks(self) -> None:
+        two_point_review = VALID_REVIEW.rsplit("\n3. ", 1)[0]
+        report = VALIDATOR.validate(two_point_review)
+        self.assertFalse(report["valid"])
+        self.assertIn(
+            "AUTHOR_POINT_MINIMUM_NOT_MET",
+            {item["code"] for item in report["errors"]},
+        )
+
+    def test_four_connected_points_match_default(self) -> None:
+        review = VALID_REVIEW.replace(
+            "# Confidential Comments to the Editor",
+            "4. This same mismatch carries into the conclusion, which should be "
+            "limited to the population and evidence actually assessed.\n\n"
+            "# Confidential Comments to the Editor",
+        )
+        report = VALIDATOR.validate(review)
+        self.assertTrue(report["valid"])
+        self.assertNotIn(
+            "AUTHOR_POINT_COUNT_DEFAULT_FOUR",
+            {item["code"] for item in report["warnings"]},
+        )
 
     def test_template_placeholders_block(self) -> None:
         report = VALIDATOR.validate(
@@ -63,10 +90,28 @@ class SubmissionReviewTests(unittest.TestCase):
             {item["code"] for item in report["errors"]},
         )
 
-    def test_more_than_eight_points_blocks(self) -> None:
+    def test_current_template_placeholders_block(self) -> None:
+        template = (
+            ROOT
+            / "more-than-peer-review"
+            / "assets"
+            / "submission_review_template.md"
+        ).read_text(encoding="utf-8")
+        report = VALIDATOR.validate(
+            template.replace(
+                "`Accept | Minor Revision | Major Revision | Reject`", "Reject"
+            )
+        )
+        self.assertFalse(report["valid"])
+        self.assertIn(
+            "UNRESOLVED_PLACEHOLDER",
+            {item["code"] for item in report["errors"]},
+        )
+
+    def test_more_than_twelve_points_blocks(self) -> None:
         points = "\n".join(
             f"{index}. Section {index} contains an independently consequential issue."
-            for index in range(1, 10)
+            for index in range(1, 14)
         )
         review = (
             "# Recommendation\n\nReject\n\n# Comments to the Author(s)\n\n"
@@ -77,6 +122,78 @@ class SubmissionReviewTests(unittest.TestCase):
         self.assertFalse(report["valid"])
         self.assertIn(
             "AUTHOR_POINT_LIMIT_EXCEEDED",
+            {item["code"] for item in report["errors"]},
+        )
+
+    def test_eleven_points_warn_but_remain_structurally_valid(self) -> None:
+        points = "\n".join(
+            f"{index}. Section {index} contains an independently consequential issue."
+            for index in range(1, 12)
+        )
+        review = (
+            "# Recommendation\n\nReject\n\n# Comments to the Author(s)\n\n"
+            "The verification rule does not establish the property claimed.\n\n"
+            + points
+        )
+        report = VALIDATOR.validate(review)
+        self.assertTrue(report["valid"])
+        self.assertIn(
+            "AUTHOR_POINT_COUNT_REVIEW",
+            {item["code"] for item in report["warnings"]},
+        )
+
+    def test_formulaic_review_gets_style_warnings(self) -> None:
+        points = "\n\n".join(
+            (
+                f"{index}. Section {index} reports a synthetic protocol condition "
+                "without defining the corresponding state transition. This leaves "
+                "the claimed guarantee unsupported. Please clarify this issue."
+            )
+            for index in range(1, 6)
+        )
+        review = (
+            "# Recommendation\n\nMajor Revision\n\n"
+            "# Comments to the Author(s)\n\n"
+            "The paper addresses an important problem.\n\n"
+            + points
+        )
+        report = VALIDATOR.validate(review)
+        warning_codes = {item["code"] for item in report["warnings"]}
+        self.assertTrue(report["valid"])
+        self.assertIn("STOCK_OPENING_LANGUAGE_REVIEW", warning_codes)
+        self.assertIn("UNIFORM_POINT_LENGTH_REVIEW", warning_codes)
+        self.assertIn("REPETITIVE_REQUEST_ENDINGS_REVIEW", warning_codes)
+
+    def test_prohibited_punctuation_blocks_submission_prose(self) -> None:
+        replacements = {
+            "EM_DASH_IN_PROSE": "The protocol claims safety—its check measures throughput.",
+            "SEMICOLON_IN_PROSE": "The protocol claims safety; its check measures throughput.",
+            "COLON_IN_PROSE": "The mismatch is direct: the check measures throughput.",
+        }
+        for expected_code, sentence in replacements.items():
+            with self.subTest(expected_code=expected_code):
+                review = VALID_REVIEW.replace(
+                    "The paper presents a useful framework, but the current evidence does not yet\n"
+                    "establish the central generalization claim.",
+                    sentence,
+                )
+                report = VALIDATOR.validate(review)
+                self.assertFalse(report["valid"])
+                self.assertIn(
+                    expected_code,
+                    {item["code"] for item in report["errors"]},
+                )
+
+    def test_internal_process_disclosure_blocks_submission_prose(self) -> None:
+        review = VALID_REVIEW.replace(
+            "Both concerns are disclosed to the authors and\n"
+            "appear addressable through a corrected analysis and reproducibility record.",
+            "Local AI assistance was used under recorded permission and human verification is required.",
+        )
+        report = VALIDATOR.validate(review)
+        self.assertFalse(report["valid"])
+        self.assertIn(
+            "INTERNAL_PROCESS_TEXT_IN_SUBMISSION",
             {item["code"] for item in report["errors"]},
         )
 

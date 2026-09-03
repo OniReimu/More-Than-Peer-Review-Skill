@@ -6,9 +6,14 @@ Skill，用于将保密稿件从 Intake 推进到可供人工核验的最终审�
 它整合了：
 
 - PDF/DOCX 防御性安全预检；
-- claim-evidence、方法、统计和可复现性审计；
+- 研究动机、创新性、claim–mechanism、设计与系统假设审查；
+- claim–evidence、方法、统计和可复现性审计；
 - 期刊默认四档与会议专用 Rubric；
-- `private-review.md` 到 `submission-review.md` 的受控转换；
+- `private-review.md` 到自然书写风格 `submission-review.md` 的受控转换；
+- 在不改变证据、结论和披露要求的前提下，检查套话开场、等长评论及重复收尾；
+- 最终作者与编辑意见正文禁止使用 em dash、分号和冒号；
+- 私有分析可以全面，但最终意见围绕一条审稿主线和通常一到两个根本漏洞展开，并写成三到四条相互关联、未必独立的作者意见；
+- 当这些漏洞足以支持 recommendation 时停止扩展，次要清单问题保留在私有记录；
 - 作者可见与编辑私密渠道分离；
 - 用户明确要求时的网页草稿填报。
 

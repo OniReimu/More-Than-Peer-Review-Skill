@@ -8,6 +8,8 @@ answers from browser state or another manuscript.
 - Analyze each rating independently; do not propagate an overall recommendation into
   every subscore.
 - Preserve author-visible and editor-confidential boundaries.
+- Do not copy local workflow metadata into author or editor comments. Populate a
+  disclosure or assistance field only when the live form explicitly contains it.
 - Use short evidence-bounded explanations for individual form questions.
 - Do not attach files, reveal reviewer identity, opt into public recognition, or make
   personal-preference choices without user direction.
@@ -17,4 +19,5 @@ answers from browser state or another manuscript.
   authorization for that exact action in the current request.
 
 After filling, report the manuscript, mapped recommendation/score, autosave or draft
-state, and confirmation that final submission was not performed.
+state, and confirmation that final submission was not performed in the user-facing
+handoff, not inside any review-form text field.

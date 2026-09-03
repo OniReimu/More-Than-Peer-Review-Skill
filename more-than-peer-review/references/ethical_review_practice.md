@@ -198,12 +198,18 @@ Do not include:
 Use only for matters that require a separate channel:
 
 - Reviewer conflicts or competence limits
-- Permission, confidentiality, or AI-use disclosures
+- Required process disclosures, but only when the actual form or editor explicitly
+  assigns them to this channel
 - Credible ethics, integrity, duplicate-publication, image, or security concerns
 - Reasons an issue cannot safely be raised directly with authors
 - Requests for specialist review
 
 Ordinary scientific criticism should not appear only in the editor channel. Do not write a harsher private review that contradicts the author-facing report. The bundled scaffold keeps these channels visibly separate.
+
+Do not volunteer internal tool, intake, preflight, permission, or draft-status
+metadata in ordinary author or editor comments. Keep that material in the private
+workspace. If a mandatory form asks for it, answer the exact designated field rather
+than appending boilerplate to the scientific review.
 
 ## Suspected integrity problems
 

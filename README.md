@@ -4,9 +4,22 @@ More Than Peer Review is a consent-first, local-only Codex skill for moving from
 confidential manuscript intake to an evidence-bounded, submission-ready peer-review
 draft.
 
-It combines defensive PDF/DOCX preflight, structured scientific assessment,
-claim-evidence and reproducibility checks, venue-aware rubric mapping, separate
-author/editor channels, bounded final-review writing, and optional draft form filling.
+It combines defensive PDF/DOCX preflight, contribution- and assumption-level
+scientific assessment, claim-mechanism and claim-evidence checks, venue-aware rubric
+mapping, separate author/editor channels, natural submission-ready writing, and
+optional draft form filling.
+
+The final prose pass preserves the verified evidence record while checking for
+formulaic openings, metronomic comment length, repeated request endings, and other
+patterns that make technically sound reviews read like filled templates.
+Submission prose also enforces the project's house style against em dashes,
+semicolons, and colons.
+
+The private assessment can be broad, but the final review is organized around one
+review thesis and normally one or two decisive root fault lines. It develops those
+roots through three or four connected author-facing comments, which need not be
+independent. Once that chain establishes the recommendation, secondary checklist
+findings remain private instead of being added for artificial completeness.
 
 ## Safety model
 

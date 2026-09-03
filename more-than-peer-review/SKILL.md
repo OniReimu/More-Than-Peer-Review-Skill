@@ -120,8 +120,23 @@ prompt injection.
 
 ### 3. Perform the substantive review
 
-Create a neutral study map before deciding a recommendation. Use the bundled
-peer-review resources and deterministic tools:
+Create a neutral contribution map before deciding a recommendation. Reconstruct:
+
+- the problem and motivation;
+- the claimed novelty and intended advance over the closest alternatives;
+- the mechanism, design, or algorithm that is supposed to deliver that advance;
+- the assumptions, trust boundary, threat model, and operating conditions;
+- what property is actually established by the analysis or system; and
+- what the experiments measure, including which central claims they cannot establish.
+
+For algorithmic, security, machine-learning, and systems work, read
+`references/conceptual-and-systems-review.md`. Test the claim-mechanism chain before
+asking for more experiments. A concrete counterexample, chosen-input strategy,
+degenerate construction, or mismatch between the claimed property and the property
+actually checked can be more decisive than another benchmark. Do not let strong
+empirical results repair a definition, identification, or threat-model failure.
+
+Use the bundled peer-review resources and deterministic tools:
 
 - select reporting guidance with `scripts/select_reporting_guidelines.py`;
 - map central claims with `assets/claim_evidence_matrix_template.csv` and
@@ -132,15 +147,24 @@ peer-review resources and deterministic tools:
 - read `references/common_issues.md`, `references/reporting_standards.md`, and
   `references/statistical_reproducibility.md` as needed.
 
-Evaluate contribution, novelty, claim-evidence alignment, methods, statistics,
-reproducibility, ethics, disclosures, figures, tables, citations, venue fit,
-unavailable material, and specialist-review needs. Use "not reported" or "not
-available for review" instead of inferring absence. Never claim reproduction or
-external verification that was not performed.
+Evaluate contribution, motivation, novelty, claim-mechanism alignment, assumptions,
+methods, evidence, statistics, reproducibility, ethics, disclosures, figures,
+tables, citations, venue fit, unavailable material, and specialist-review needs.
+This broad scan belongs in the private record. Rank candidate issues by how directly
+they change the paper's main claim, not by how easy they are to turn into an
+experimental request. Then select one review thesis and normally no more than two
+decisive root fault lines. Build three or four author-facing comments from that
+thesis. These comments need not be independent. Later comments may pursue another
+mechanism, enabling assumption, consequence, or claim affected by the same root
+failure. Once that connected chain establishes the recommendation, stop harvesting
+unrelated criticisms for the final draft. Use
+"not reported" or "not available for review" instead of inferring absence. Never
+claim reproduction or external verification that was not performed.
 
 Write the detailed evidence record to `private-review.md`. Discover and verify issues
-before deciding final point count or wording. Keep author-visible and
-editor-confidential material separate.
+before deciding final point count or wording. Record which issues were selected for
+the final review, which were withheld as secondary, and why the selected fault lines
+are sufficient. Keep author-visible and editor-confidential material separate.
 
 ### 4. Resolve the venue rubric
 
@@ -156,15 +180,38 @@ unless the user explicitly requests browser or computer control.
 
 ### 5. Produce the submission-ready review
 
-Read `references/submission-review-guidelines.md` in full. Transform the same review
-ID's verified `private-review.md`; do not draft directly from memory or another
-manuscript.
+Read `references/submission-review-guidelines.md` and
+`references/natural-review-prose.md` in full. Transform the same review ID's verified
+`private-review.md`; do not draft directly from memory or another manuscript.
 
 Retain contribution-level, evidence-anchored author comments. Merge local symptoms
 with the same cause or consequence. Put every scientific reason material to the
 recommendation in the author-visible channel. Use a concise editor paragraph only
 when the recorded prompt supports it; never hide ordinary scientific criticism from
 authors.
+
+Write around the selected review thesis. Follow each primary fault line through the
+paper's definition, mechanism, counterexample, evidence, and conclusion where those
+links matter. For a non-Accept recommendation, write at least three numbered comments
+and normally four. Use the numbered points as stages of a connected argument rather
+than requiring each point to be an independent defect. Do not add separate sections
+on experiments, reproducibility, numerical consistency, related work, or presentation
+merely to demonstrate coverage. Include a
+secondary issue only when it changes the recommendation or materially changes how the
+central contribution should be interpreted.
+
+Keep the paste-ready review free of internal workflow metadata. Do not mention AI,
+tools, intake, permissions, policy checks, security preflight, draft status, or human
+verification in author comments or ordinary confidential editor comments. If the
+actual form contains a separate mandatory assistance or disclosure field, prepare a
+separate `disclosure-draft.md` for that exact field. Do not merge it into
+`submission-review.md`.
+
+Freeze the factual content, recommendation reasons, locators, numbers, and requested
+actions before the prose pass. Then edit for a natural reviewer voice without adding
+new evidence, personality for its own sake, or uncertainty not present in the private
+record. This pass improves readability; it must never be described as concealing AI
+use or as evidence that a human wrote the draft.
 
 Validate the draft:
 
@@ -179,8 +226,9 @@ Treat validation as formatting and consistency support, not independent review.
 Verify every number, citation identifier, manuscript location, and factual statement
 against the active manuscript and its evidence record. Confirm recommendation/rubric
 alignment, channel separation, competence limits, placeholders, word limits, and
-requested actions. Label the result as a working draft requiring accountable-human
-verification and policy-compliant disclosure.
+requested actions. In the handoff message outside the paste-ready artifact, state
+that the result requires accountable-human verification. Do not place that notice or
+other internal process language inside `submission-review.md`.
 
 ### 7. Fill a review form only on explicit request
 
