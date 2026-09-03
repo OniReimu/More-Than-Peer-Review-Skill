@@ -198,8 +198,8 @@ Do not include:
 Use only for matters that require a separate channel:
 
 - Reviewer conflicts or competence limits
-- Required process disclosures, but only when the actual form or editor explicitly
-  assigns them to this channel
+- Required process disclosures, but only when the controlling policy, actual form,
+  or editor explicitly assigns them to this channel
 - Credible ethics, integrity, duplicate-publication, image, or security concerns
 - Reasons an issue cannot safely be raised directly with authors
 - Requests for specialist review
@@ -208,8 +208,9 @@ Ordinary scientific criticism should not appear only in the editor channel. Do n
 
 Do not volunteer internal tool, intake, preflight, permission, or draft-status
 metadata in ordinary author or editor comments. Keep that material in the private
-workspace. If a mandatory form asks for it, answer the exact designated field rather
-than appending boilerplate to the scientific review.
+workspace. If the controlling policy, editor, or form requires a disclosure, prepare
+it separately and use the designated channel. The absence of a dedicated form field
+does not cancel that requirement.
 
 ## Suspected integrity problems
 

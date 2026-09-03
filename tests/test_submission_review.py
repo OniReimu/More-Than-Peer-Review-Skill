@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -125,6 +126,36 @@ class SubmissionReviewTests(unittest.TestCase):
             {item["code"] for item in report["errors"]},
         )
 
+    def test_each_current_template_placeholder_blocks_on_its_own(self) -> None:
+        template = (
+            ROOT / "more-than-peer-review" / "assets" / "submission_review_template.md"
+        ).read_text(encoding="utf-8")
+        for placeholder in re.findall(r"\[[^\]]+\]", template):
+            with self.subTest(placeholder=placeholder):
+                review = VALID_REVIEW.replace("1. Section 3", placeholder + "\n\n1. Section 3")
+                report = VALIDATOR.validate(review)
+                self.assertFalse(report["valid"])
+                self.assertIn(
+                    "UNRESOLVED_PLACEHOLDER",
+                    {item["code"] for item in report["errors"]},
+                )
+
+    def test_partially_filled_template_without_editor_section_blocks(self) -> None:
+        template = (
+            ROOT / "more-than-peer-review" / "assets" / "submission_review_template.md"
+        ).read_text(encoding="utf-8")
+        review = template.replace(
+            "`Accept | Minor Revision | Major Revision | Reject`", "Reject"
+        ).replace(
+            "[Short overall assessment or useful summary in prose.]",
+            "The central contribution is not established.",
+        ).split("# Confidential Comments to the Editor")[0]
+        report = VALIDATOR.validate(review)
+        self.assertFalse(report["valid"])
+        self.assertIn(
+            "UNRESOLVED_PLACEHOLDER", {item["code"] for item in report["errors"]}
+        )
+
     def test_eleven_points_warn_but_remain_structurally_valid(self) -> None:
         points = "\n".join(
             f"{index}. Section {index} contains an independently consequential issue."
@@ -191,6 +222,63 @@ class SubmissionReviewTests(unittest.TestCase):
             "Local AI assistance was used under recorded permission and human verification is required.",
         )
         report = VALIDATOR.validate(review)
+        self.assertFalse(report["valid"])
+        self.assertIn(
+            "INTERNAL_PROCESS_TEXT_IN_SUBMISSION",
+            {item["code"] for item in report["errors"]},
+        )
+
+    def test_technical_punctuation_preserved_in_both_fields(self) -> None:
+        technical_spans = (
+            "See https://example.org/data.",
+            "See [the artifact](https://example.org/data).",
+            "See <https://example.org/data>.",
+            r"Equation 2 defines $f: X \to Y$.",
+            r"Equation 2 defines \(f: X \to Y\).",
+            "Equation 2 states\n$$f: X \\to Y$$\nunder this assumption.",
+            r"Equation 2 states \[p(x; \theta)\] under this assumption.",
+            "## Evidence:\nThe evidence concerns the stated population.",
+        )
+        for anchor in ("1. Section 3", "I recommend major revision"):
+            for span in technical_spans:
+                with self.subTest(anchor=anchor, span=span):
+                    review = VALID_REVIEW.replace(anchor, span + "\n\n" + anchor)
+                    report = VALIDATOR.validate(review)
+                    self.assertTrue(report["valid"], report["errors"])
+
+    def test_surrounding_prose_still_enforces_punctuation(self) -> None:
+        cases = (
+            ("See https://example.org/data; the split is missing.", "SEMICOLON_IN_PROSE"),
+            ("See https://example.org/data: the split is missing.", "COLON_IN_PROSE"),
+            ("See https://example.org/data—the split is missing.", "EM_DASH_IN_PROSE"),
+            ("[Artifact: source](https://example.org/data)", "COLON_IN_PROSE"),
+            (r"The map $f: X \to Y$ is defined; its domain is unclear.", "SEMICOLON_IN_PROSE"),
+            (r"Equation 2 contains an unmatched $f: X reference.", "COLON_IN_PROSE"),
+            ("The claim is `important: true`.", "COLON_IN_PROSE"),
+        )
+        for anchor in ("1. Section 3", "I recommend major revision"):
+            for sentence, code in cases:
+                with self.subTest(anchor=anchor, sentence=sentence):
+                    report = VALIDATOR.validate(
+                        VALID_REVIEW.replace(anchor, sentence + "\n\n" + anchor)
+                    )
+                    self.assertFalse(report["valid"])
+                    self.assertIn(code, {item["code"] for item in report["errors"]})
+
+    def test_scientific_process_terms_require_context_check_without_blocking(self) -> None:
+        for term in ("human verification", "working draft", "security preflight", "intake record"):
+            with self.subTest(term=term):
+                report = VALIDATOR.validate(VALID_REVIEW.replace(
+                    "1. Section 3", f"The method in Section 4 includes {term}.\n\n1. Section 3"
+                ))
+                self.assertTrue(report["valid"], report["errors"])
+                self.assertIn(
+                    "PROCESS_LANGUAGE_CONTEXT_REVIEW",
+                    {item["code"] for item in report["warnings"]},
+                )
+
+    def test_explicit_review_verification_notice_still_blocks(self) -> None:
+        report = VALIDATOR.validate(VALID_REVIEW + "\nThis review requires human verification.\n")
         self.assertFalse(report["valid"])
         self.assertIn(
             "INTERNAL_PROCESS_TEXT_IN_SUBMISSION",

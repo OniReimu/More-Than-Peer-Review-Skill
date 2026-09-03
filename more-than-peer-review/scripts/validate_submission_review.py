@@ -22,7 +22,9 @@ POINT_RE = re.compile(r"(?ms)^\s*(\d+)\.\s+(.*?)(?=^\s*\d+\.\s+|\Z)")
 PLACEHOLDER_RE = re.compile(
     r"\{\{[^}]+\}\}|\b(?:TODO|TBD)\b|"
     r"\[(?:Contribution-level|Independent contribution-level|20-40 word|"
-    r"Short overall|Write the first|Add an independent|Use as few|Use only when)",
+    r"Short overall|Write the first|Add an independent|Use as few|Use only when|"
+    r"Develop the primary fault line|Continue from point 1|Trace the root problem|"
+    r"Complete the argument|Stop after the connected argument)",
     re.IGNORECASE,
 )
 STOCK_OPENING_RE = re.compile(
@@ -38,15 +40,35 @@ REQUEST_END_RE = re.compile(
 INTERNAL_PROCESS_RE = re.compile(
     r"\b(?:local AI assistance|AI assistance was used|recorded permission|"
     r"policy-compliant disclosure|venue-compliant disclosure|"
-    r"accountable-human verification|human verification|"
-    r"working draft|optional draft pending|security preflight|"
-    r"intake record)\b",
+    r"accountable-human verification|optional draft pending)\b|"
+    r"\bthis (?:review|draft)\b[^.!?\n]{0,100}\b"
+    r"(?:human verification|working draft|security preflight|intake record)\b",
     re.IGNORECASE,
+)
+PROCESS_TERM_RE = re.compile(
+    r"\b(?:human verification|working draft|security preflight|intake record)\b",
+    re.IGNORECASE,
+)
+URL_RE = re.compile(r"https?://[^\s<>\[\]()`—]+", re.IGNORECASE)
+MATH_RE = re.compile(
+    r"(?<!\\)\$\$[\s\S]+?(?<!\\)\$\$|"
+    r"(?<![\\$])\$(?!\$)(?:\\.|[^$\n\\])+(?<!\\)\$(?!\$)|"
+    r"\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\]"
 )
 
 
 def words(text: str) -> int:
     return len(WORD_RE.findall(text))
+
+
+def punctuation_prose(text: str) -> str:
+    """Exclude headings and literal technical spans, retaining surrounding prose."""
+    text = re.sub(r"(?m)^[ \t]{0,3}#{1,6}[ \t]+.*$", "", text)
+    # Keep trailing sentence punctuation outside a bare URL subject to house style.
+    text = URL_RE.sub(
+        lambda match: match.group(0)[len(match.group(0).rstrip(".,;:!?—")):], text
+    )
+    return MATH_RE.sub("", text)
 
 
 def sections(markdown: str) -> dict[str, str]:
@@ -141,6 +163,9 @@ def validate(markdown: str) -> dict[str, Any]:
     for field, prose in submission_prose.items():
         if INTERNAL_PROCESS_RE.search(prose):
             errors.append(issue("INTERNAL_PROCESS_TEXT_IN_SUBMISSION", field))
+        elif PROCESS_TERM_RE.search(prose):
+            warnings.append(issue("PROCESS_LANGUAGE_CONTEXT_REVIEW", field))
+        prose = punctuation_prose(prose)
         for code, mark in prohibited_punctuation.items():
             if mark in prose:
                 errors.append(issue(code, field))

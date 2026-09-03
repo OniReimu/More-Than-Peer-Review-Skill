@@ -89,7 +89,9 @@ criticism unsupported by the manuscript.
   contribution threshold for substantive reasons.
 
 Formatting alone does not justify rejection. A decisive contribution-level defect
-may justify rejection even if it produces only one main comment.
+may justify rejection even when it is the only root fault line. Develop its
+mechanism and consequences through the required connected comments without
+inventing independent defects.
 
 ## Confidential editor channel
 
@@ -104,10 +106,17 @@ reviewer identity under an anonymized process.
 
 Author and editor comment fields are not process logs. Do not mention model or tool
 use, intake declarations, authorization records, policy checks, document preflight,
-draft status, or the need for human verification in either field. When an actual
-review form separately and explicitly asks about assistance or disclosure, draft the
-answer in a separate file mapped to that field. Never append it automatically to the
-scientific review or recommendation rationale.
+draft status, or the need for human verification in either ordinary comment field.
+When the controlling policy, editor, or actual form requires an assistance disclosure,
+draft it in a separate `disclosure-draft.md` mapped to the required destination.
+A dedicated form field is not a prerequisite. If the required destination is the
+confidential editor field, place the disclosure there during authorized form filling.
+Keep it separate from the scientific review artifact and recommendation rationale.
+
+The validator flags ambiguous process terms for contextual review because phrases
+such as `human verification` may describe the paper's method. Keep scientific uses
+when supported by the manuscript, and remove references to preparing this review.
+A warning does not waive the rule against internal workflow metadata.
 
 ## Final verification
 

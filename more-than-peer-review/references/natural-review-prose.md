@@ -83,6 +83,12 @@ Rewrite the sentence instead of replacing one disallowed mark with another. Mark
 headings and template labels may contain a colon because they are not submission
 prose. Preserve mathematical notation verbatim only when changing its punctuation
 would make the technical reference incorrect; otherwise describe it in words.
+Preserve literal URLs needed for evidence anchors as well. The validator excludes
+Markdown headings, HTTP(S) URLs, and explicitly delimited mathematics (`$...$`,
+`$$...$$`, `\(...\)`, or `\[...\]`) from punctuation checks. Surrounding prose
+remains subject to the same prohibitions. Do not wrap ordinary prose in math
+delimiters to avoid these rules; verify that excluded spans are genuine technical
+references during the final read.
 
 ## Final read-aloud pass
 

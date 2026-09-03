@@ -202,10 +202,12 @@ central contribution should be interpreted.
 
 Keep the paste-ready review free of internal workflow metadata. Do not mention AI,
 tools, intake, permissions, policy checks, security preflight, draft status, or human
-verification in author comments or ordinary confidential editor comments. If the
-actual form contains a separate mandatory assistance or disclosure field, prepare a
-separate `disclosure-draft.md` for that exact field. Do not merge it into
-`submission-review.md`.
+verification in author comments or ordinary confidential editor comments. When the
+controlling policy, editor, or actual form requires an assistance disclosure,
+prepare a separate `disclosure-draft.md` and record its required destination, even
+when that destination is the confidential editor field. Do not merge it into
+`submission-review.md`. Follow `references/form-filling.md` to place a required
+disclosure in its designated channel during authorized form filling.
 
 Freeze the factual content, recommendation reasons, locators, numbers, and requested
 actions before the prose pass. Then edit for a natural reviewer voice without adding
