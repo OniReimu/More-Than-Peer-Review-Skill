@@ -1,10 +1,5 @@
 schema_version: 1
 
-intake:
-  explicit_confirmation_required: true
-  file_placement_is_confirmation: false
-  named_batch_confirmation_allowed: true
-
 processing:
   local_only: true
   external_service_use: false
@@ -19,7 +14,6 @@ rubric:
     - reject
   conference_resolution:
     - user_confirmed
-    - official_public_source
     - platform_default_fallback
 
 optional_stages:

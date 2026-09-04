@@ -1,157 +1,75 @@
-# Local Tool Contracts
+# Local tool reference
 
-All bundled tools are deterministic Python 3.11+ standard-library CLIs. They make no network, model, image, subprocess, environment-variable, dynamic-code, or pickle calls.
+The bundled utilities are deterministic Python 3.11+ command-line tools. They make
+no network, model, image, environment-variable, dynamic-code, or pickle calls.
 
-## Shared safety behavior
+Shared behavior includes bounded UTF-8 inputs, duplicate-key rejection, symlink
+rejection, no implicit overwrite, and reports that contain identifiers and rule codes
+rather than manuscript prose.
 
-- Inputs: local JSON, CSV, or Markdown only
-- Maximum input size: 4 MiB
-- Maximum CSV rows: 5,000
-- UTF-8 only; NUL bytes rejected
-- Symlink inputs and outputs rejected
-- Duplicate JSON keys and CSV headers rejected
-- Unknown schema fields rejected by JSON validators
-- Existing outputs are not replaced unless `--force` is explicit
-- JSON and Markdown outputs are written atomically with owner-only permissions where supported
-- Reports contain IDs, counts, rule codes, and line numbers—not raw manuscript, review, claim, title, author, or reference prose
-
-Exit codes:
-
-- `0`: structurally valid or completed
-- `1`: a validly parsed audit is blocked or has rule errors
-- `2`: malformed input, unsafe path, unsupported field, or CLI validation error
-
-Run tools from the skill directory or use absolute script paths.
-
-## Intake validator
+## Create a review workspace
 
 ```bash
-python3 scripts/validate_review_intake.py \
-  assets/review_intake_template.json
+python3 scripts/init_review.py REVIEW-ID --root reviews
 ```
 
-Purpose:
+This creates isolated source, security, rubric, claim-evidence, and statistical audit
+paths from content-free templates.
 
-- Confirm documented authorization and human accountability
-- Record role, competence areas and limits, conflicts, target-venue policy, and review model
-- Enforce local-only processing, no external service use, no data reuse, and a deletion/retention record
-- Gate approved AI assistance on venue policy, permission, and disclosure
+## Inspect PDF or DOCX structure
 
-The bundled template is intentionally blocked until the human completes the controls.
+```bash
+python3 scripts/preflight_pdf.py source.pdf \
+  --review-id REVIEW-ID \
+  --output security/pdf-security-report.json
+```
 
-Top-level JSON fields:
+```bash
+python3 scripts/preflight_docx.py source.docx \
+  --review-id REVIEW-ID \
+  --rendered-pdf security/rendered/source.pdf \
+  --pdf-security-report security/pdf-security-report.json \
+  --output security/docx-security-report.json
+```
 
-- `schema_version`: `2.0`
-- `review_id`: safe local identifier, not a manuscript title
-- `material`: status and sensitive-data flag
-- `authorization`: basis and documented permissions
-- `reviewer`: capacity, accountability, competence, and conflicts
-- `venue_policy`: checked status, review model, confidential-note channel
-- `ai_use`: policy, plan, permission, disclosure
-- `handling`: local-only, external-service, reuse, retention controls
-- `scope`: manuscript type, requested focus, limits, specialist needs
+The preflight records active features, parser coverage, visibility mismatches, file
+digests, and bounded instruction-like-text indicators. It does not echo manuscript
+passages.
 
-The report validates declarations, not their truth.
-
-## Reporting-guideline selector and coverage audit
-
-Selection only:
+## Select reporting guidance
 
 ```bash
 python3 scripts/select_reporting_guidelines.py \
   assets/study_profile_template.json
 ```
 
-Selection plus coverage:
+Add `--coverage assets/reporting_checklist_template.csv` to audit item coverage. The
+tool identifies potentially relevant reporting guidance without assigning a quality
+score.
 
-```bash
-python3 scripts/select_reporting_guidelines.py \
-  assets/study_profile_template.json \
-  --coverage assets/reporting_checklist_template.csv
-```
-
-Profile fields:
-
-- `schema_version`: `2.0`
-- `profile_id`
-- `study_types`: identifiers such as `randomized_trial`
-- `report_kind`: `results`, `protocol`, `abstract`, or `data_release`
-- `features`: for example `ai_based`, `ai_intervention`, `large_language_model`
-- `domains`: for example `health`, `genomics`, `proteomics`
-
-Coverage columns:
-
-- `guideline_id`
-- `item_id`: aggregate main item number for guidelines with a known main count
-- `status`: `reported`, `partly_reported`, `not_reported`, `not_applicable`, `not_assessed`
-- `location`: required for reported or partly reported items
-- `rationale`: required for not-applicable items
-
-The catalog is `assets/reporting_guidelines.json`, verified on the date embedded in that file. It does not fetch live updates. The output deliberately has no percentage or quality score.
-
-## Claim–evidence matrix validator
+## Validate a claim-evidence matrix
 
 ```bash
 python3 scripts/validate_claim_evidence.py \
   assets/claim_evidence_matrix_template.csv
 ```
 
-Columns:
+The matrix distinguishes supported, partly supported, unsupported, and unassessed
+claims. It records evidence IDs, alignment issues, limitations, and requested actions.
+The tool checks structure, not whether the evidence is scientifically sufficient.
 
-- `claim_id`
-- `location`
-- `claim_type`
-- `claim_summary`: input-only; never echoed
-- `evidence_ids`: semicolon-delimited local IDs
-- `support_level`: `supported`, `partly_supported`, `unsupported`, `not_assessed`
-- `alignment_issue`: direction, magnitude, population, outcome, timepoint, causal language, scope, uncertainty, selective reporting, other, or none
-- `limitation`: input-only; never echoed
-- `requested_action`: input-only; never echoed
-
-Rules include:
-
-- Supported claims need evidence IDs and no declared alignment issue.
-- Partly supported claims need evidence, an issue code, and a requested action.
-- Unsupported claims need an issue code.
-- Claim IDs must be unique.
-
-The tool does not determine whether evidence is true or sufficient.
-
-## Statistics and reproducibility checklist
+## Audit statistics and reproducibility
 
 ```bash
 python3 scripts/audit_statistics_reproducibility.py \
   assets/statistical_reproducibility_template.json
 ```
 
-The JSON contains:
+The checklist covers estimands, units, independence, sampling, missing data,
+prespecification, assumptions, multiplicity, uncertainty, outcomes, provenance,
+materials, and claim interpretation.
 
-- Checklist and study-design IDs
-- Specialist-review declaration
-- Core item records with category, applicability, status, evidence locations, note, and requested action
-
-Core areas:
-
-- Question/estimand alignment
-- Unit, independence, sample size, allocation, and blinding
-- Inclusion/exclusion, missing data, and data handling
-- Prespecification, method alignment, assumptions, multiplicity, and dependence
-- Effect estimates, uncertainty, denominators, outcomes, and harms
-- Data/material access, code/environment, and provenance
-- Ethics/governance, claim interpretation, and selective reporting
-
-The tool requires the core item IDs but permits additional safe IDs. It reports gaps and specialist-review triggers without a score.
-
-## Citation/reference consistency audit
-
-The Markdown must use Pandoc-style citation keys:
-
-```markdown
-The synthetic method is described elsewhere [@ref-synthetic-2026].
-Several sources may be grouped [@ref-one; @ref-two].
-```
-
-Run:
+## Audit citation keys
 
 ```bash
 python3 scripts/audit_citations.py \
@@ -159,95 +77,38 @@ python3 scripts/audit_citations.py \
   assets/citation_references_template.csv
 ```
 
-Reference CSV columns:
+This checks citation-key consistency and identifier shape. It does not search for or
+verify references.
 
-- `reference_id`
-- `title`
-- `authors`
-- `year`
-- `doi`
-- `url`
-- `verification_status`: `verified_primary`, `verified_secondary`, or `not_verified`
-
-The audit finds:
-
-- Citation keys without reference rows
-- Reference rows not cited
-- Cited references not marked verified
-- References without DOI or URL
-- Malformed citation syntax
-
-It validates DOI/URL shape only. It does not resolve identifiers, search the web, verify existence, or determine whether a reference supports a claim.
-
-## Review scaffold generator
-
-The intake must pass first:
+## Generate a private review scaffold
 
 ```bash
-python3 scripts/generate_review_scaffold.py \
-  completed-intake.json \
-  -o private-review.md
+python3 scripts/generate_review_scaffold.py REVIEW-ID -o private-review.md
 ```
 
-The generator:
+The scaffold organizes the contribution map, review thesis, concrete construction,
+evidence record, connected comment chain, withheld findings, and recommendation.
 
-- Reads `assets/review_scaffold_template.md`
-- Interpolates only safe intake identifiers
-- Never reads or embeds manuscript text
-- Separates comments to authors from confidential editor notes
-- Provides structured major/minor comment fields
-- Includes human-accountability and no-editorial-decision warnings
-
-It refuses unresolved intake controls and implicit overwrite.
-
-## Tone and actionability lint
+## Lint the private record
 
 ```bash
 python3 scripts/lint_review.py private-review.md
 ```
 
-Required headings:
+The linter checks channel structure, placeholders, abusive language, unsupported
+claims of executed analysis, and actionability fields. Lexical lint has false
+positives and false negatives.
 
-- `# Comments to authors`
-- `# Confidential comments to editor`
-
-Structured comment headings:
-
-- `### Major comment M1`
-- `### Minor comment m1`
-
-Each comment must contain non-placeholder values for:
-
-- `Location`
-- `Observation`
-- `Evidence or criterion`
-- `Why it matters`
-- `Requested action`
-
-The linter flags:
-
-- Missing or reversed author/editor channels
-- Editor-only markers in the author channel
-- Unresolved scaffold placeholders
-- A narrow lexicon of abusive or personal language
-- Role impersonation and editorial-decision phrases
-- Missing actionability fields
-- Claims of executed analysis that need provenance
-
-Lexical lint has false positives and false negatives. Human review remains required.
-
-## Private output examples
-
-All JSON-reporting CLIs accept:
+## Validate submission prose
 
 ```bash
--o local-report.json
+python3 scripts/validate_submission_review.py submission-review.md
 ```
 
-To replace an existing output deliberately:
+The validator checks recommendation labels, point count, word limits, numbering,
+template residue, page or line locators, repeated first-person scenario openings,
+formulaic patterns, and prohibited punctuation. It does not verify scientific facts
+or recommendation correctness.
 
-```bash
---force
-```
-
-Do not place outputs in a synced or shared directory unless the authorization and venue policy permit it. Delete or retain inputs, drafts, and reports according to the documented review policy.
+All JSON-reporting tools accept `-o local-report.json`. Use `--force` only when an
+existing generated report should be replaced deliberately.

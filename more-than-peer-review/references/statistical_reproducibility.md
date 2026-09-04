@@ -12,7 +12,7 @@ Use, in order:
 4. Methods, code, tables, figures, supplements, and repository records
 5. Applicable primary method or regulatory guidance
 6. Current reporting guidance
-7. Target venue policy
+7. Target venue conventions
 
 Do not reject a method merely because another method is more familiar. Explain the estimand, assumption, error, or interpretation at stake.
 

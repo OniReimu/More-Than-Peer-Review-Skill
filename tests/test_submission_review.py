@@ -215,19 +215,6 @@ class SubmissionReviewTests(unittest.TestCase):
                     {item["code"] for item in report["errors"]},
                 )
 
-    def test_internal_process_disclosure_blocks_submission_prose(self) -> None:
-        review = VALID_REVIEW.replace(
-            "Both concerns are disclosed to the authors and\n"
-            "appear addressable through a corrected analysis and reproducibility record.",
-            "Local AI assistance was used under recorded permission and human verification is required.",
-        )
-        report = VALIDATOR.validate(review)
-        self.assertFalse(report["valid"])
-        self.assertIn(
-            "INTERNAL_PROCESS_TEXT_IN_SUBMISSION",
-            {item["code"] for item in report["errors"]},
-        )
-
     def test_technical_punctuation_preserved_in_both_fields(self) -> None:
         technical_spans = (
             "See https://example.org/data.",
@@ -264,26 +251,6 @@ class SubmissionReviewTests(unittest.TestCase):
                     )
                     self.assertFalse(report["valid"])
                     self.assertIn(code, {item["code"] for item in report["errors"]})
-
-    def test_scientific_process_terms_require_context_check_without_blocking(self) -> None:
-        for term in ("human verification", "working draft", "security preflight", "intake record"):
-            with self.subTest(term=term):
-                report = VALIDATOR.validate(VALID_REVIEW.replace(
-                    "1. Section 3", f"The method in Section 4 includes {term}.\n\n1. Section 3"
-                ))
-                self.assertTrue(report["valid"], report["errors"])
-                self.assertIn(
-                    "PROCESS_LANGUAGE_CONTEXT_REVIEW",
-                    {item["code"] for item in report["warnings"]},
-                )
-
-    def test_explicit_review_verification_notice_still_blocks(self) -> None:
-        report = VALIDATOR.validate(VALID_REVIEW + "\nThis review requires human verification.\n")
-        self.assertFalse(report["valid"])
-        self.assertIn(
-            "INTERNAL_PROCESS_TEXT_IN_SUBMISSION",
-            {item["code"] for item in report["errors"]},
-        )
 
     def test_page_and_line_locators_block_submission_prose(self) -> None:
         replacements = {

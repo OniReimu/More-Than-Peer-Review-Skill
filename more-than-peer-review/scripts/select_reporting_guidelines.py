@@ -339,7 +339,7 @@ def assess(
             "Guideline selection and checklist coverage concern reporting "
             "completeness only. They are not scores and do not establish study "
             "quality, validity, conduct, or manuscript merit. Check the official "
-            "guideline, applicable extensions, and target venue policy."
+            "guideline and applicable extensions."
         ),
     }
 

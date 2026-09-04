@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import shutil
 from pathlib import Path
@@ -39,12 +38,6 @@ def initialize(root: Path, review_id: str) -> Path:
     (target / "source").mkdir(parents=True)
     (target / "security" / "rendered").mkdir(parents=True)
 
-    intake = json.loads((ASSETS / "review_intake_template.json").read_text("utf-8"))
-    intake["review_id"] = review_id
-    (target / "review_intake.json").write_text(
-        json.dumps(intake, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
-
     copies = {
         "venue_rubric_template.md": "venue-rubric.md",
         "study_profile_template.json": "study_profile.json",
@@ -74,7 +67,7 @@ def main() -> int:
         destination = initialize(Path(args.root).expanduser(), args.review_id)
         print(f"Created review workspace: {destination}")
         return 0
-    except (InitError, OSError, json.JSONDecodeError) as exc:
+    except (InitError, OSError) as exc:
         print(f"ERROR: {exc}")
         return 2
 

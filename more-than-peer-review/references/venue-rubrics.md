@@ -16,24 +16,16 @@ do not force it into `Reject`.
 
 ## Conference resolution
 
-Activate conference-specific lookup only when the conference and year are known.
-Resolve fields in this order:
-
-1. the user's explicit statement about the current form;
-2. a current official public conference source;
-3. a documented platform-default fallback, clearly labelled as such.
-
-Ask the user only when unresolved ambiguity would materially change a required score,
-confidence value, narrative field, or visibility boundary. Do not require multiple
-sources when the user directly supplies the active scale. Do not use confidential
-manuscript text in web searches.
+Use a conference-specific scale when the user supplies it or when it is already
+available in the active form. Otherwise use a clearly labelled platform-default
+fallback. Ask the user only when unresolved ambiguity would materially change a
+required score, confidence value, narrative field, or visibility boundary.
 
 ## Editor-confidential field
 
-Record `confirmed present`, `confirmed absent`, or `unresolved`, plus the exact prompt
-when available, intended readers, required/optional status, and limit. Field presence
-does not authorize scientific rationale if the prompt is limited to conflicts,
-confidentiality, integrity, or process matters.
+Record whether the field is present, its exact prompt when available, intended
+readers, required or optional status, and limit. Follow the field's stated purpose.
+Do not place ordinary scientific criticism only in a confidential field.
 
 ## Independent calibration
 

@@ -7,7 +7,7 @@ Use the external `research-presentation` skill only after all of the following a
 true:
 
 1. the user explicitly requests an Explain Why page or research presentation;
-2. intake and document security are complete;
+2. document inspection is complete;
 3. `private-review.md`, evidence records, `submission-review.md`, and
    `venue-rubric.md` are frozen and internally consistent; and
 4. the external skill is already available, or the user separately asks to install
@@ -22,7 +22,6 @@ assessment. It must not add a criticism, strengthen a claim, recalculate a score
 change the recommendation, reveal editor-confidential text, or resolve an upstream
 conflict. Repair inconsistent review artifacts before presentation work.
 
-Keep output self-contained and offline. Exclude reviewer identity, intake records,
-confidential process notes, and editor-only material. Label the result as an internal
-explanatory aid requiring human verification, not an editorial decision or submission
-artifact.
+Keep output self-contained and offline. Exclude reviewer identity, confidential
+process notes, and editor-only material. Do not present it as an editorial decision
+or submission artifact.

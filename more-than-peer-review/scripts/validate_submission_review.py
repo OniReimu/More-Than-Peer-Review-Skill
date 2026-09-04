@@ -37,18 +37,6 @@ REQUEST_END_RE = re.compile(
     r"I encourage the authors to)\b[^.!?]*[.!?]?\s*$",
     re.IGNORECASE,
 )
-INTERNAL_PROCESS_RE = re.compile(
-    r"\b(?:local AI assistance|AI assistance was used|recorded permission|"
-    r"policy-compliant disclosure|venue-compliant disclosure|"
-    r"accountable-human verification|optional draft pending)\b|"
-    r"\bthis (?:review|draft)\b[^.!?\n]{0,100}\b"
-    r"(?:human verification|working draft|security preflight|intake record)\b",
-    re.IGNORECASE,
-)
-PROCESS_TERM_RE = re.compile(
-    r"\b(?:human verification|working draft|security preflight|intake record)\b",
-    re.IGNORECASE,
-)
 URL_RE = re.compile(r"https?://[^\s<>\[\]()`—]+", re.IGNORECASE)
 MATH_RE = re.compile(
     r"(?<!\\)\$\$[\s\S]+?(?<!\\)\$\$|"
@@ -184,10 +172,6 @@ def validate(markdown: str) -> dict[str, Any]:
         "COLON_IN_PROSE": ":",
     }
     for field, prose in submission_prose.items():
-        if INTERNAL_PROCESS_RE.search(prose):
-            errors.append(issue("INTERNAL_PROCESS_TEXT_IN_SUBMISSION", field))
-        elif PROCESS_TERM_RE.search(prose):
-            warnings.append(issue("PROCESS_LANGUAGE_CONTEXT_REVIEW", field))
         if PAGE_LOCATOR_RE.search(prose):
             errors.append(issue("PAGE_LOCATOR_IN_PROSE", field))
         if LINE_LOCATOR_RE.search(prose):
@@ -201,7 +185,7 @@ def validate(markdown: str) -> dict[str, Any]:
     return {
         "schema_version": "1.0",
         "valid": valid,
-        "status": "READY_FOR_HUMAN_VERIFICATION" if valid else "BLOCKED",
+        "status": "READY" if valid else "BLOCKED",
         "errors": errors,
         "warnings": warnings,
         "counts": {

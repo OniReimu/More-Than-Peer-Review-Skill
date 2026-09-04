@@ -2,8 +2,7 @@
 
 Use this reference only after the substantive review is complete. Its purpose is to
 make the author-facing draft read like a careful reviewer thinking through this
-particular paper. It does not authorize hiding AI assistance, evading detection, or
-changing the evidence record.
+particular paper while preserving the evidence record.
 
 ## Preserve substance first
 

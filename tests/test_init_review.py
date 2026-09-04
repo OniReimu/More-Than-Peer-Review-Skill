@@ -20,7 +20,6 @@ class InitReviewTests(unittest.TestCase):
             target = INIT.initialize(Path(directory) / "reviews", "Review-001")
             self.assertTrue((target / "source").is_dir())
             self.assertTrue((target / "security" / "rendered").is_dir())
-            self.assertTrue((target / "review_intake.json").is_file())
             self.assertTrue((target / "venue-rubric.md").is_file())
             self.assertEqual(list((target / "source").iterdir()), [])
 

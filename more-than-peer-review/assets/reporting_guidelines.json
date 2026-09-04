@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "reviewed_on": "2026-07-23",
-  "notice": "This catalog supports reporting-guideline selection only. Verify the official source, applicable extensions, and target venue policy. Checklist coverage is not a quality or merit score.",
+  "notice": "This catalog supports reporting-guideline selection only. Verify the official source and applicable extensions. Checklist coverage is not a quality or merit score.",
   "guidelines": [
     {
       "id": "ARRIVE-2.0",

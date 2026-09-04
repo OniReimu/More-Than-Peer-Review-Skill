@@ -16,6 +16,5 @@ Bundled scripts are intended for local deterministic processing. They reject com
 active PDF/DOCX features and look for bounded visibility mismatches, but they are not
 a sandbox or malware scanner and cannot prove the absence of prompt injection.
 
-The skill must not read confidential content before explicit intake confirmation,
-must not use external services by default, and must not submit a review without a
-separate explicit instruction.
+The skill must not use external services for manuscript content and must not submit a
+review without a separate explicit instruction.

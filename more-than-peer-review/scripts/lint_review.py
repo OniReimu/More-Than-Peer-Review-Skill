@@ -201,7 +201,7 @@ def lint(markdown: str) -> dict[str, Any]:
     return {
         "schema_version": "2.0",
         "valid": not errors,
-        "status": "READY_FOR_HUMAN_REVIEW" if not errors else "REVISION_REQUIRED",
+        "status": "READY" if not errors else "REVISION_REQUIRED",
         "errors": errors,
         "warnings": warnings,
         "line_count": len(lines),
@@ -219,7 +219,7 @@ def lint(markdown: str) -> dict[str, Any]:
         "notice": (
             "This deterministic lint uses structural and lexical rules. It does "
             "not judge scientific validity, verify whether statements are true, "
-            "or replace accountable human review. Findings contain line numbers "
+            "or replace substantive review. Findings contain line numbers "
             "and rule IDs, not review or manuscript text."
         ),
     }

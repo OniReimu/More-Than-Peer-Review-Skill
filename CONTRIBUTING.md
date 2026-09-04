@@ -12,5 +12,5 @@ Keep contributions generic, local-only, and testable with synthetic materials.
 5. Run the unit tests and Python syntax checks before opening a pull request.
 6. Preserve third-party license and attribution notices.
 
-Changes to intake, external disclosure, final submission, or security status handling
-must fail closed and include regression tests.
+Changes to external access, final submission, or security status handling must fail
+closed and include regression tests.

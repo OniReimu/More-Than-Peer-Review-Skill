@@ -137,7 +137,6 @@ class PreflightDocxTests(unittest.TestCase):
                         str(pdf_report),
                         "--output",
                         str(output_report),
-                        "--authorization-confirmed",
                     ]
                 )
             report_text = output_report.read_text(encoding="utf-8")

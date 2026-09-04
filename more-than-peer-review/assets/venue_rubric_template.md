@@ -5,7 +5,7 @@
 - Track:
 - Review source: `official invitation`, `internal distribution`, or other documented basis
 - Platform:
-- Rubric basis: `journal default`, `user confirmed`, `official public source`, or `platform fallback`
+- Rubric basis: `journal default`, `user supplied`, or `platform fallback`
 - Public reference, if used:
 - Recommendation / Overall score: range and labels
 - Confidence: range and labels, or `not required`
