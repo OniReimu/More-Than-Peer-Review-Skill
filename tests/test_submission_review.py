@@ -285,6 +285,55 @@ class SubmissionReviewTests(unittest.TestCase):
             {item["code"] for item in report["errors"]},
         )
 
+    def test_page_and_line_locators_block_submission_prose(self) -> None:
+        replacements = {
+            "PAGE_LOCATOR_IN_PROSE": "The acceptance rule on page 7 checks only accuracy.",
+            "LINE_LOCATOR_IN_PROSE": "The claim in lines 418 to 426 does not follow.",
+        }
+        for expected_code, sentence in replacements.items():
+            with self.subTest(expected_code=expected_code):
+                review = VALID_REVIEW.replace(
+                    "The paper presents a useful framework, but the current evidence does not yet\n"
+                    "establish the central generalization claim.",
+                    sentence,
+                )
+                report = VALIDATOR.validate(review)
+                self.assertFalse(report["valid"])
+                self.assertIn(
+                    expected_code,
+                    {item["code"] for item in report["errors"]},
+                )
+
+    def test_section_figure_and_table_locators_remain_valid(self) -> None:
+        review = VALID_REVIEW.replace(
+            "The paper presents a useful framework, but the current evidence does not yet\n"
+            "establish the central generalization claim.",
+            "Section 4 and Figure 3 use a threshold that conflicts with Table 2.",
+        )
+        report = VALIDATOR.validate(review)
+        self.assertTrue(report["valid"])
+
+    def test_repeated_first_person_scenario_openings_warn(self) -> None:
+        points = "\n\n".join(
+            (
+                f"{index}. Here, I consider a construction in Section {index}. "
+                "The stated check accepts it even though the claimed work is absent."
+            )
+            for index in range(1, 5)
+        )
+        review = (
+            "# Recommendation\n\nMajor Revision\n\n"
+            "# Comments to the Author(s)\n\n"
+            "The verification rule does not establish the claimed property.\n\n"
+            + points
+        )
+        report = VALIDATOR.validate(review)
+        self.assertTrue(report["valid"])
+        self.assertIn(
+            "REPEATED_FIRST_PERSON_SCENARIO_OPENING_REVIEW",
+            {item["code"] for item in report["warnings"]},
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

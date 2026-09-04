@@ -26,6 +26,45 @@ Vary length and syntax because the arguments differ, not by randomly perturbing 
 text. Do not split one issue merely to create short points or fuse unrelated issues
 to create a long one.
 
+## Let the reviewer construct the central case
+
+When the main concern can be expressed as a concrete attack, counterexample, or
+failure scenario, let the reviewer take ownership of that reasoning. A natural major
+comment may begin with wording such as `Here, I consider the following attack` or
+`I read the verification rule as permitting the following construction`. It may then
+do the following work in connected prose.
+
+1. Define the actors, starting state, and allowed operations.
+2. Walk through the construction using the paper's own notation or components.
+3. Identify the weaker property that the mechanism actually checks.
+4. Explain why the constructed case still passes that check.
+5. Trace the same failure into a safeguard, threshold, experiment, or headline claim.
+6. End with the exact unresolved question or a plausible direction the authors need
+   to assess.
+
+This is not a mandatory paragraph template. Use first-person scene setting only for
+the one central case where it makes the reviewer's reasoning easier to follow. Do not
+start several comments with `Here, I define`, `Here, I consider`, or another repeated
+formula. Other points may begin abruptly from the consequence of the first point.
+
+Give the central case the space it needs. It may occupy several paragraphs inside one
+numbered comment. Related follow-up comments can be much shorter. A brief threshold
+problem, table inconsistency, or abstract overclaim may need only one or two sentences
+after the main mechanism-level objection has been established. Preserve this unequal
+weight instead of expanding every point into the same miniature essay.
+
+## Use human-scale manuscript references
+
+In author-facing and editor-facing prose, locate material only by Section, Figure, or
+Table when a locator helps the authors find the disputed claim. Do not include page
+numbers, line numbers, or stacked coordinates such as a section followed by a page
+and line range. Those details belong in the private evidence record.
+
+If no Section, Figure, or Table identifier is available, name the relevant definition,
+claim, paragraph topic, or verification step in ordinary prose. A reviewer can write
+`the acceptance rule in Section 4` or `the accuracy result in Table 3`. There is no
+need to reproduce the extraction coordinates used to find it.
+
 ## Write from a reviewer's point of view
 
 Use direct judgments when the evidence supports them: `This condition does not imply
@@ -39,6 +78,11 @@ Use first person to report a genuine reading reaction when helpful. Examples inc
 agree`, and `Perhaps I missed a transition, but the copied state appears stale after
 the next credit`. These statements make the reviewer's reasoning visible without
 inventing a biography.
+
+First person can also introduce analysis created during the review. Statements such
+as `Here, I consider the following failure case` or `I define this attack as follows`
+claim ownership only of the argument being presented. They do not imply prior work,
+outside experiments, or personal experience.
 
 Never claim prior work, implementation experience, deployments, publications, or
 expertise that the user did not provide as true. If the user supplies real experience
@@ -103,6 +147,10 @@ Read only the author-facing section once as continuous prose. Check:
 4. Does each question identify what remains unresolved rather than asking the
    authors to `clarify` in general?
 5. Did the edit preserve every evidence anchor and recommendation reason?
+6. Are all author-facing locators limited to Section, Figure, or Table, with no page
+   or line numbers?
+7. Was first-person scene setting reserved for a central argument rather than repeated
+   as a mannerism?
 
 The final draft should remain professional and anonymous. Humor, conversational
 asides, invented emotion, and conspicuous stylistic quirks are normally inappropriate

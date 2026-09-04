@@ -209,11 +209,14 @@ when that destination is the confidential editor field. Do not merge it into
 `submission-review.md`. Follow `references/form-filling.md` to place a required
 disclosure in its designated channel during authorized form filling.
 
-Freeze the factual content, recommendation reasons, locators, numbers, and requested
-actions before the prose pass. Then edit for a natural reviewer voice without adding
-new evidence, personality for its own sake, or uncertainty not present in the private
-record. This pass improves readability; it must never be described as concealing AI
-use or as evidence that a human wrote the draft.
+Freeze the factual content, recommendation reasons, numbers, and requested actions
+before the prose pass. Translate precise private-record locations into human-scale
+author-facing references. In the submission-ready prose, identify material only by
+Section, Figure, or Table when a locator is useful. Do not cite page or line numbers.
+Then edit for a natural reviewer voice without adding new evidence, personality for
+its own sake, or uncertainty not present in the private record. This pass improves
+readability; it must never be described as concealing AI use or as evidence that a
+human wrote the draft.
 
 Validate the draft:
 
@@ -226,11 +229,13 @@ Treat validation as formatting and consistency support, not independent review.
 ### 6. Verify and hand off
 
 Verify every number, citation identifier, manuscript location, and factual statement
-against the active manuscript and its evidence record. Confirm recommendation/rubric
-alignment, channel separation, competence limits, placeholders, word limits, and
-requested actions. In the handoff message outside the paste-ready artifact, state
-that the result requires accountable-human verification. Do not place that notice or
-other internal process language inside `submission-review.md`.
+against the active manuscript and its evidence record. Confirm that author-facing
+locators stop at Section, Figure, or Table and contain no page or line numbers.
+Confirm recommendation/rubric alignment, channel separation, competence limits,
+placeholders, word limits, and requested actions. In the handoff message outside the
+paste-ready artifact, state that the result requires accountable-human verification.
+Do not place that notice or other internal process language inside
+`submission-review.md`.
 
 ### 7. Fill a review form only on explicit request
 

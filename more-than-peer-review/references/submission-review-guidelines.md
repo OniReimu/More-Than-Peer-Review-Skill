@@ -28,8 +28,8 @@ abstract rewrite. Keep comments at the level of the central contribution while
 remaining specific:
 
 1. State the contribution-level judgment.
-2. Anchor it to a page plus section, table, figure, equation, theorem, appendix, or
-   other stable manuscript locator when available.
+2. Anchor it to a Section, Figure, or Table when a locator is useful. Do not include
+   page or line numbers in author-facing or editor-facing prose.
 3. Explain why it affects validity, interpretation, reproducibility, ethics, or the
    claimed contribution.
 4. Add a bounded request or pointed question when a proportionate remedy exists.
@@ -68,6 +68,13 @@ comments, or a short `Summary` and `Major concerns` section, are both acceptable
 Direct questions can sound natural and focus the dispute, especially after a concrete
 counterexample. Avoid stock openings, generic praise, repeated transition phrases,
 and identical closing requests across points.
+
+When the central issue supports a concrete construction, let the first major comment
+define and walk through it using the paper's notation. A first-person opening such as
+`Here, I consider the following failure case` can make the reviewer's reasoning
+visible. Reserve that device for the central case. Continue related consequences in
+later points and allow them to be shorter rather than repeating the same opening and
+paragraph shape.
 
 Apply the punctuation house style in `natural-review-prose.md`. Em dashes, semicolons,
 and colons are prohibited in author-facing and editor-facing prose. Restructure the
@@ -121,6 +128,8 @@ A warning does not waive the rule against internal workflow metadata.
 ## Final verification
 
 - Verify every factual statement, number, citation identifier, and locator.
+- Confirm final prose uses only Section, Figure, or Table locators and contains no
+  page or line numbers.
 - Confirm every recommendation reason is visible to authors.
 - Confirm no unsupported suspicion or internal process history remains.
 - Check limits, placeholders, duplicated points, and channel separation.

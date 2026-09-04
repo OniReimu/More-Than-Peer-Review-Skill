@@ -6,11 +6,14 @@
 
 [Short overall assessment or useful summary in prose.]
 
-1. [Develop the primary fault line as a natural paragraph. Follow the same defect
-   through the mechanism, counterexample, evidence, or conclusion where relevant.]
+1. [Develop the primary fault line as a natural paragraph or short sequence of
+   paragraphs. When useful, introduce a concrete attack or failure case in the
+   reviewer's own voice, walk through it with the paper's notation, and show why the
+   stated check still accepts it. Do not use page or line numbers.]
 
 2. [Continue from point 1 by examining an enabling assumption, missing safeguard, or
-   another step in the same failure path. This point does not need to be independent.]
+   another step in the same failure path. This point does not need to be independent
+   or similar in length.]
 
 3. [Trace the root problem into another material consequence, claim, or part of the
    mechanism. Add a second root fault line only when it belongs to the review thesis.]
@@ -21,6 +24,9 @@
 
 [Stop after the connected argument establishes the recommendation. Do not add points
 merely to cover experiments, reproducibility, novelty, statistics, or presentation.]
+
+[Use only Section, Figure, or Table identifiers as final-prose locators. Keep page and
+line coordinates in the private evidence record.]
 
 # Confidential Comments to the Editor
 

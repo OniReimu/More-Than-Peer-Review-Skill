@@ -53,6 +53,20 @@ claim that therefore does not follow. Do not label a construction an "attack" un
 it is permitted by the manuscript's stated model; if the model excludes it, review
 whether that exclusion is justified by the motivating setting.
 
+When this construction becomes the central author-facing concern, present it as a
+piece of reviewer reasoning rather than a generic missing-property complaint. Define
+the scenario, walk through the states or operations using the paper's notation, and
+then separate what the verifier observes from what the paper claims. First-person
+wording such as `Here, I consider the following attack` is appropriate when it makes
+clear that the reviewer is introducing a concrete test case. Use it once for the main
+construction, not as the repeated opening of every numbered point.
+
+Continue vertically from the same construction. A later point may ask why the stated
+safeguard does not reject it. Another may show that a fixed performance threshold
+only demonstrates prior convergence. A final short point may identify the resulting
+overclaim in a figure, table, abstract, or conclusion. These are connected effects of
+one root failure, not categories that need independent treatment.
+
 ## Choose a review thesis and stop
 
 Do the broad search privately, but do not turn the final review into a report on every
