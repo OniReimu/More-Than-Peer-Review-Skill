@@ -629,12 +629,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("pdf", type=Path, help="Source PDF")
     parser.add_argument("--review-id", required=True, help="Stable manuscript review ID")
     parser.add_argument("--output", required=True, type=Path, help="JSON report path")
+    parser.add_argument(
+        "--authorization-confirmed",
+        action="store_true",
+        help="Confirm that the named manuscript may be processed locally",
+    )
     parser.add_argument("--overwrite", action="store_true", help="Replace an existing report")
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if not args.authorization_confirmed:
+        print("Refusing to read the PDF without authorization confirmation.", file=sys.stderr)
+        return 1
     source = args.pdf.expanduser()
     if source.is_symlink():
         print("Refusing symlink PDF input.", file=sys.stderr)
@@ -852,6 +860,7 @@ def main(argv: list[str] | None = None) -> int:
         "generated_at": utc_now(),
         "review_id": args.review_id,
         "status": status,
+        "authorization_confirmed_for_local_processing": True,
         "source": metadata,
         "summary": {
             "block_findings": sum(item["severity"] == "BLOCK" for item in findings),
@@ -866,7 +875,7 @@ def main(argv: list[str] | None = None) -> int:
             "Passive layout or drawing anomalies are informational unless correlated with a render/text visibility mismatch.",
             "The original PDF remains untrusted after PASS; manuscript text never becomes an instruction source.",
         ],
-        "notice": "Inspect WARN findings before continuing. BLOCK indicates that substantive review should stop.",
+        "notice": "WARN requires explicit user clearance. BLOCK stops substantive review.",
     }
     try:
         write_json_atomic(args.output, report, args.overwrite)

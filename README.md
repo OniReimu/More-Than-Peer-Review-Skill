@@ -17,6 +17,11 @@ Bundled utilities perform local document preflight, workspace initialization,
 claim-evidence checks, statistical and reproducibility audits, scaffold generation,
 and final structure validation. They make no network or model calls.
 
+Before confidential content is read, the user confirms that they may process the
+named manuscript and that the venue permits the planned local AI assistance. This is
+a concise confirmation, not an intake form. The user clears security warnings,
+verifies the final review, and follows any venue disclosure requirement.
+
 ## Install
 
 ```bash

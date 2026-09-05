@@ -8,6 +8,8 @@ answers from browser state or another manuscript.
 - Analyze each rating independently; do not propagate an overall recommendation into
   every subscore.
 - Preserve author-visible and editor-confidential boundaries.
+- If the controlling venue requires an AI-use disclosure, prepare it separately and
+  place it only in the venue-designated field.
 - Use short evidence-bounded explanations for individual form questions.
 - Do not attach files, reveal reviewer identity, opt into public recognition, or make
   personal-preference choices without user direction.

@@ -5,7 +5,7 @@ import importlib.util
 import io
 import json
 from pathlib import Path
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import tempfile
 import unittest
 import zipfile
@@ -113,6 +113,25 @@ class PreflightDocxTests(unittest.TestCase):
             {item["rule_id"] for item in findings},
         )
 
+    def test_authorization_required_before_source_read(self) -> None:
+        error = io.StringIO()
+        with redirect_stderr(error):
+            return_code = PREFLIGHT.main(
+                [
+                    "missing.docx",
+                    "--review-id",
+                    "synthetic",
+                    "--rendered-pdf",
+                    "missing.pdf",
+                    "--pdf-security-report",
+                    "missing-report.json",
+                    "--output",
+                    "report.json",
+                ]
+            )
+        self.assertEqual(return_code, 1)
+        self.assertIn("authorization confirmation", error.getvalue())
+
     def test_end_to_end_report_contains_no_manuscript_text(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -135,13 +154,16 @@ class PreflightDocxTests(unittest.TestCase):
                         str(pdf),
                         "--pdf-security-report",
                         str(pdf_report),
+                        "--authorization-confirmed",
                         "--output",
                         str(output_report),
                     ]
                 )
             report_text = output_report.read_text(encoding="utf-8")
+            report = json.loads(report_text)
         self.assertEqual(return_code, 0)
         self.assertNotIn(secret_text, report_text)
+        self.assertTrue(report["authorization_confirmed_for_local_processing"])
 
 
 if __name__ == "__main__":

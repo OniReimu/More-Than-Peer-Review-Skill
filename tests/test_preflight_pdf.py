@@ -4,7 +4,7 @@ import importlib.util
 import io
 import json
 from pathlib import Path
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import unittest
 
 
@@ -148,6 +148,15 @@ class PreflightPdfTests(unittest.TestCase):
         ]
         self.assertEqual(PREFLIGHT.status_for(findings), "WARN")
 
+    def test_authorization_required_before_source_read(self) -> None:
+        error = io.StringIO()
+        with redirect_stderr(error):
+            return_code = PREFLIGHT.main(
+                ["missing.pdf", "--review-id", "synthetic", "--output", "report.json"]
+            )
+        self.assertEqual(return_code, 1)
+        self.assertIn("authorization confirmation", error.getvalue())
+
     def test_end_to_end_synthetic_pdf_passes(self) -> None:
         import tempfile
 
@@ -163,6 +172,7 @@ class PreflightPdfTests(unittest.TestCase):
                         str(pdf),
                         "--review-id",
                         "synthetic",
+                        "--authorization-confirmed",
                         "--output",
                         str(report_path),
                     ]
@@ -171,6 +181,7 @@ class PreflightPdfTests(unittest.TestCase):
         self.assertIn(return_code, (0, 2))
         self.assertIn(report["status"], ("PASS", "WARN"))
         self.assertEqual(report["review_id"], "synthetic")
+        self.assertTrue(report["authorization_confirmed_for_local_processing"])
         self.assertEqual(len(report["source"]["sha256"]), 64)
         self.assertNotIn("Ordinary synthetic page", json.dumps(report))
 
